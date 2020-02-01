@@ -2,6 +2,12 @@ from PIL import Image
 import numpy as np
 import glob
 
+def colort(color):
+    if((color[2]-color[0]) > 30 and (color[2]-color[1]) > 10):
+        return True
+    else:
+        return False
+
 def processLog(filename):
     print("Processing log: {}".format(filename))
     #Open this image and make a Numpy version for easy processing
@@ -18,13 +24,13 @@ def processLog(filename):
     for index, color in enumerate(colors):
         count = counts[index]
         proportion = (100 * count) / (h * w)
-        #if(color[0] < 150 and color[1] < 150):
-        print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
-        per = per + proportion
+        if(colort(color)):
+            print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
+            per = per + proportion
 
     #pper
     print('per: {:.2f}%'.format(per))
 
 #Iterate over all images called "log*png" in current directory
 #for filename in glob.glob('test*png'):
-processLog('test1.png')
+processLog('image/2.JPG')
