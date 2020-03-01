@@ -8,9 +8,9 @@ img_plate = cv2.imread('numPlate.jpg', cv2.IMREAD_COLOR)
 img_resize = cv2.resize(img_plate, dsize=(300, 200), interpolation=cv2.INTER_CUBIC)
 
 
-img_dst = img_resize[15:80, 10:35]
-img_dst2 = img_resize[100:185, 10:35]
-img_dst3 = img_resize[70:175, 265:290]
+img_dst = img_resize[15:90, 5:35]
+img_dst2 = img_resize[110:200, 5:40]
+img_dst3 = img_resize[50:180, 260:290]
 
 
 cv2.imshow("src", img_resize)
