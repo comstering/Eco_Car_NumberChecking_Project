@@ -24,13 +24,13 @@ def processLog(filename):
     for index, color in enumerate(colors):
         count = counts[index]
         proportion = (100 * count) / (h * w)
-        if(colort(color)):
-            print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
-            per = per + proportion
+        #if(colort(color)):
+        print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
+        per = per + proportion
 
     #pper
     print('per: {:.2f}%'.format(per))
 
 #Iterate over all images called "log*png" in current directory
 #for filename in glob.glob('test*png'):
-processLog('image/2.JPG')
+processLog('test1.png')
