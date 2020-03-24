@@ -3,10 +3,47 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img
 import pytesseract
+from PIL import Image
+import glob
+
+def colort(color):
+    if(color[2] > 100 and color[1] <= color[2] and (color[2] - color[0]) > 50):
+        return True
+    else:
+        return False
+
+def processLog(filename):
+    print("Processing log: {}".format(filename))
+    #Open this image and make a Numpy version for easy processing
+    im = Image.open(filename).convert('RGBA').convert('RGB')
+    #im = cv2.imread(filename, cv2.COLOR_BGR2RGB)
+    imnp = np.array(im)
+    h, w = imnp.shape[:2]
+
+    #Get list of unique colours...
+    #Arrange all pixels into a tall column of 3 RGB values and find unique rows (colours)
+    colors, counts = np.unique(imnp.reshape(-1, 3), axis = 0, return_counts = 1)
+
+    #Iterate through unique colours
+    per = 0.00
+    for index, color in enumerate(colors):
+        count = counts[index]
+        proportion = (100 * count) / (h * w)
+        if(colort(color)):
+            print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
+            per = per + proportion
+
+    #pper
+    print('per: {:.2f}%'.format(per))
+    if(per > 60):
+        print('전기차입니다')
+    else:
+        print('전기차가 아닙니다')
+
 plt.style.use('dark_background' )
 
 #원본 이미지와 그레이 스케일 이미지 생성
-img_ori = cv2.imread('image/elect2.jpg')
+img_ori = cv2.imread('image/1.JPG')
 height, width, channel = img_ori.shape
 
 gray = cv2.cvtColor(img_ori, cv2.COLOR_BGR2GRAY)
@@ -97,8 +134,8 @@ for d in possible_contours:
 MAX_DIAG_MULTIPLYER = 5 # 5
 MAX_ANGLE_DIFF = 12.0 # 12.0
 MAX_AREA_DIFF = 0.5 # 0.5
-MAX_WIDTH_DIFF = 0.8
-MAX_HEIGHT_DIFF = 0.4
+MAX_WIDTH_DIFF = 0.8 # 0.8
+MAX_HEIGHT_DIFF = 0.4 # 0.4
 MIN_N_MATCHED = 3 # 3
 
 def find_chars(contour_list):
@@ -313,7 +350,11 @@ ConvertedImg = cv2.cvtColor(ori_plate_imgs[longest_idx], cv2.COLOR_RGB2BGR)
 cv2.imshow('numberPlateShow', ConvertedImg)
 cv2.imwrite('numPlate.jpg', ConvertedImg)
 
+
+
+#Iterate over all images called "log*png" in current directory
+#for filename in glob.glob('test*png'):
+processLog('numPlate.jpg')
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
-
