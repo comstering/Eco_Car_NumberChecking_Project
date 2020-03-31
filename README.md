@@ -3,6 +3,15 @@
 #getNumber.py
 ---------------
 50개의 데이터를 차트로 표현하는 소스코드
+수정하는부분
+51, 52줄의
+print('elect/elect' + str(te) + '.jpg')
+img_ori = cv2.imread('elect/elect' + str(te) + '.jpg')
+
+->
+
+print('number/' + str(te) + '.png')
+img_ori = cv2.imread('number/' + str(te) + '.png')
 
 #getNumber_test.py
 ----------------
