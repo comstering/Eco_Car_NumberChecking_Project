@@ -8,10 +8,6 @@ import glob
 
 def colort(color):
     if(color[2]>100 and color[1]<=color[2] and color[2] > color[0] + 35):
-        #(color[2] > 100 and color[1] < 60 and color[0] < 60)
-        #or (color[2] < 100 and color[1] < 80 and color[0] < 50 and color[2] > color[0] and color[2] > color[1])
-        #or (color[2] > 150 and color[1] <= color[2] and color[0] < 100)
-        #or ((color[2] - color[0]) > 50 and color[2] > color[1] and color[2] > color[0])):
         return True
     else:
         return False
@@ -19,7 +15,6 @@ def colort(color):
 def processLog(filename):
     #Open this image and make a Numpy version for easy processing
     im = Image.open(filename).convert('RGBA').convert('RGB')
-    #im = cv2.imread(filename, cv2.COLOR_BGR2RGB)
     imnp = np.array(im)
     h, w = imnp.shape[:2]
 
@@ -33,10 +28,12 @@ def processLog(filename):
         count = counts[index]
         proportion = (100 * count) / (h * w)
         if(colort(color)):
-            print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
+            #인식되는 모은 RGB값을 print
+            #print('color: {}, count: {}, proportation: {:.2f}%'.format(color, count, proportion))
+            #인식되는 모은 RGB값 %를 더함
             per = per + proportion
-            
-    #pper
+
+    #파란색으로 인식된 pixel % 출력
     print('per: {:.2f}%'.format(per))
     if(per > 60):
         print('전기차입니다')
@@ -46,7 +43,7 @@ def processLog(filename):
 plt.style.use('dark_background')
 
 #원본 이미지와 그레이 스케일 이미지 생성
-img_ori = cv2.imread('elect/elect38.jpg')
+img_ori = cv2.imread('number/3.png')
 height, width, channel = img_ori.shape
 
 gray = cv2.cvtColor(img_ori, cv2.COLOR_BGR2GRAY)
@@ -342,7 +339,9 @@ for i, plate_img in enumerate(plate_imgs):
     plt.imshow(img_result, cmap='gray')
 
 
+#자동차 번호판 출력
 info = plate_infos[longest_idx]
+print(plate_chars[longest_idx])
 
 img_out = img_ori.copy()
 
@@ -357,6 +356,7 @@ cv2.imwrite('numPlate.jpg', ConvertedImg)
 
 #Iterate over all images called "log*png" in current directory
 #for filename in glob.glob('test*png'):
+#전기차 확인
 processLog('numPlate.jpg')
 
 cv2.waitKey(0)
